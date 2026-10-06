@@ -1,5 +1,83 @@
 # 신동훈 202630111
 
+## 10월 1일(4주차)
+### 1. 배열을 이용한 선형 리스트 생성 및 출력
+배열(리스트)을 먼저 생성하고 append() 함수를 사용하여 데이터를 리스트의 맨 뒤에 순차적으로 추가하는 방법입니다.
+
+```py
+kakao = []
+kakao_len = len(kakao)
+kakao.append("다현")
+kakao.append("정연")
+kakao.append("쯔위")
+kakao.append("사나")
+kakao.append("지효")
+
+for i in range(len(kakao)):
+    print(kakao[i], end=', ')
+```
+
+### 2. 단순 연결 리스트 (Simple Linked List)
+단순 연결 리스트는 실제 데이터를 저장하는 공간과 다음 데이터를 가리키는 링크(Link)로 구성된 노드(Node)들의 연결로 이루어진 자료구조입니다.
+
+#### 1) Node 클래스 정의 및 노드 연결
+실제 데이터를 저장하는 data와 다음 노드를 가리키는 link를 가진 클래스를 생성합니다. 앞노드.link = 다음노드 형태로 노드들을 연결해 줍니다.
+
+```py
+class Node:
+    def __init__(self):
+        self.data = None
+        self.link = None
+
+# 노드 생성 및 연결
+node1 = Node()
+node1.data = "다현"
+
+node2 = Node()
+node2.data = "정연"
+node1.link = node2  # node1과 node2 연결
+
+node3 = Node()
+node3.data = "쯔위"
+node2.link = node3  # node2와 node3 연결
+
+node4 = Node()
+node4.data = "사나"
+node3.link = node4  # node3과 node4 연결
+
+node5 = Node()
+node5.data = "지효"
+node4.link = node5  # node4와 node5 연결
+```
+
+#### 2) 연결 리스트 전체 출력
+첫 번째 노드(node1)부터 시작하여 링크(link)가 None이 아닐 때까지 반복문을 통해 다음 노드로 이동하며 데이터를 출력합니다.
+```py
+print("\n\n연결리스트 출력")
+current = node1
+print(current.data, end=', ')
+while current.link is not None: # is not None > != None
+    current = current.link
+    print(current.data, end=', ')
+```
+
+#### 3) 노드 삽입 (중간 삽입)
+정연 노드(node2)와 쯔위 노드(node3) 사이에 '재남' 노드를 새로 삽입하는 과정입니다. 기존 데이터의 이동 없이 새 노드가 쯔위를 가리키게 하고, 정연이 새 노드를 가리키게 링크만 수정합니다.
+```py
+new_node = Node()
+new_node.data = "재남"
+
+new_node.link = node3 # 새 노드가 쯔위 노드를 가리킴
+node2.link = new_node # 정연 노드가 새 노드를 가리킴
+```
+
+#### 4) 노드 삭제 (중간 삭제)
+삽입했던 '재남' 노드를 삭제하는 과정입니다. 정연 노드(node2)의 링크가 삭제할 노드를 건너뛰고 쯔위 노드(node3)를 바로 가리키게 변경한 뒤, del()을 이용해 노드를 삭제합니다.
+```py
+node2.link = node3 # 정연 노드가 쯔위 노드를 바로 가리킴
+del(new_node)
+```
+
 ## 9월17일(3주차)
 ### 파이썬 기본 출력과 리스트 인덱싱·임시 변수를 활용한 데이터 삽입 및 요소 스왑 실습
 
