@@ -1,5 +1,90 @@
 # 신동훈 202630111
 
+## 10월 8일(5주차)
+### 1. 단순 연결 리스트의 출력 및 노드 삽입 함수 구현
+이번 주차에서는 연결 리스트를 처음부터 끝까지 순회하며 출력하는 기능과, 원하는 데이터를 찾아 그 앞에 새로운 노드를 삽입하는 기능을 함수로 모듈화하여 구현했습니다.
+
+#### 1) 노드 출력 함수 (printNodes)
+시작 노드(start)를 매개변수로 받아, 링크(link)를 따라가며 리스트의 끝(None)에 도달할 때까지 모든 노드의 데이터를 출력하는 함수입니다.
+```py
+def printNodes(start):
+    current = start
+    if current == None:
+        return
+    print(current.data, end = ' ')
+    
+    while current.link != None:
+        current = current.link
+        print(current.data, end = ' ')
+    print()
+```
+#### 2) 노드 삽입 함수 (insertNode)
+찾고자 하는 데이터(findData) 앞 위치에 새로운 데이터(insertData)를 삽입하는 함수입니다. 삽입 위치에 따라 크게 세 가지 상황으로 나누어 처리합니다.
+```py
+def insertNode(findData, insertData):
+    global memory, head, current, pre
+    current = head
+    
+    # 1. 첫 번째 노드 앞에 삽입
+    if current.data == findData:
+        node = Node()
+        node.data = insertData
+        node.link = head
+        head = node
+        return
+
+    # 2. 중간 노드 삽입
+    current = head
+    while current.link != None:
+        pre = current
+        current = current.link
+        if current.data == findData:
+            node = Node()
+            node.data = insertData
+            node.link = current
+            pre.link = node
+            return
+
+    # 3. 마지막 노드 삽입 (찾는 데이터가 없는 경우)
+    node = Node()
+    node.data = insertData
+    current.link = node
+```
+#### 3) 배열 기반 초기화 및 함수 활용 실습
+초기 데이터가 담긴 배열(dataArray)을 반복문으로 순회하며 기본 연결 리스트를 구성하고, insertNode 함수를 활용해 다양한 위치에 데이터를 삽입해 보는 테스트 코드입니다.
+```py
+# 전역 변수 선언
+memory = []
+head, current, pre = None, None, None
+dataArray = ['다현', '정연', '쯔위', '사나', '지효']
+
+if __name__ == "__main__":
+    # 첫 번째 노드 생성
+    node = Node()
+    node.data = dataArray[0]
+    head = node
+    memory.append(node)
+
+    # 나머지 노드 생성 및 연결
+    for data in dataArray[1:]:
+        pre = node
+        node = Node()
+        node.data = data
+        pre.link = node
+        memory.append(node)
+
+    printNodes(head) # 초기 리스트 출력
+
+    insertNode("다현", "화사") # 맨 앞 위치(다현 앞)에 '화사' 삽입
+    printNodes(head)
+    
+    insertNode("사나", "솔라") # 중간 위치(사나 앞)에 '솔라' 삽입
+    printNodes(head)
+    
+    insertNode("재남", "문별") # 찾는 데이터가 없으므로 맨 끝에 '문별' 삽입
+    printNodes(head)
+```
+
 ## 10월 1일(4주차)
 ### 1. 배열을 이용한 선형 리스트 생성 및 출력
 배열(리스트)을 먼저 생성하고 append() 함수를 사용하여 데이터를 리스트의 맨 뒤에 순차적으로 추가하는 방법입니다.
