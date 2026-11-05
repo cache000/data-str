@@ -1,5 +1,125 @@
 # 신동훈 202630111
 
+## 10월 29일
+### 1. 파이썬 웹 브라우저 제어 (webbrowser 모듈)
+파이썬의 내장 모듈인 webbrowser를 활용하여 기본 웹 브라우저를 열고 특정 URL로 접속하는 간단한 실습입니다.
+```py
+import webbrowser
+
+webbrowser.open("https://naver.com")
+```
+
+### 2. 스택(Stack) 자료구조의 구현 및 활용
+스택은 나중에 들어간 데이터가 먼저 나오는 후입선출(LIFO, Last In First Out) 구조의 자료구조입니다. 파이썬의 리스트와 전역 변수(top)를 활용하여 스택의 주요 기능들을 함수로 구현했습니다.
+
+#### 1. 스택 초기화 (init_stack) 및 상태 출력 (print_stack)
+지정한 크기(size)만큼 비어있는(None) 리스트를 생성하고, 스택의 현재 위치를 나타내는 top 변수를 -1로 초기화합니다. 스택 상태 출력 함수는 리스트의 마지막 인덱스부터 역순으로 데이터를 차례대로 출력하여 실제 데이터가 쌓여있는 구조를 직관적으로 보여줍니다.
+```py
+def init_stack(size):
+    global stack, top
+    stack = [None] * size
+    top = -1
+    return print("스택 초기화 완료! 스택의 크기: " + str(size))
+
+def print_stack():
+    print("=== 스택 상태 ===")
+    # range(start, end, step) : start부터 end까지 step만큼 감소하며 역순 출력
+    for i in range(len(stack) -1, -1, -1):
+        print(stack[i])
+    print("=================")
+```
+
+#### 2. 스택 꽉 참/비어있음 확인 (is_stack_full, is_stack_empty)
+데이터를 넣거나 빼기 전에 스택의 상태를 검사하는 함수입니다. top 인덱스가 리스트의 마지막 인덱스(len(stack) - 1)와 같으면 꽉 찬 상태(Full)로, -1이면 완전히 비어있는 상태(Empty)로 판단하여 참(True)을 반환합니다.
+```py
+def is_stack_full():
+    global top
+    if top == len(stack) - 1:
+        return True
+    else:
+        return False
+
+def is_stack_empty():
+    global top
+    if top == -1:
+        return True
+    else:
+        return False
+```
+
+#### 3. 스택 데이터 삽입(push), 추출(pop), 확인(peek)
+`Push`: 스택이 꽉 차지 않았다면 top을 1 증가시키고 해당 위치에 새로운 데이터를 저장합니다.
+
+`Pop`: 스택이 비어있지 않다면 현재 top 위치의 데이터를 꺼내어 출력하고, 해당 자리를 비운(None) 뒤 top을 1 감소시킵니다.
+
+`Peek`: 스택 최상단(top)에 있는 데이터를 삭제하지 않고 읽기만 하여 어떤 값이 들어있는지 확인합니다.
+```py
+def push(data):
+    global top
+    if is_stack_full():
+        return print("스택이 가득 찼습니다!")
+    else:
+        top += 1
+        stack[top] = data
+        return print("현재 top: " + str(top))
+
+def pop():
+    global top
+    if is_stack_empty():
+        return print("스택이 비어있습니다! 삭제할 데이터가 없습니다.")
+    else:
+        data = stack[top]
+        stack[top] = None
+        top -= 1
+        return print("Pop된 데이터: " + str(data) + ", 현재 top: ", top)
+
+def peek():
+    global top
+    if is_stack_empty():
+        return print("스택이 비어있습니다! Peek 불가!")
+    else:
+        data = stack[top]
+        return print("Peek 데이터: " + str(data) + ", 현재 top", top)
+```
+
+#### 4. 스택 동작 테스트
+작성한 함수들을 바탕으로 스택을 생성하고 데이터를 넣고 빼는 전체 테스트 과정입니다. 스택의 크기인 7을 초과하여 데이터를 push하거나, 비어있는 스택에서 pop 또는 peek을 시도할 때 조건문에 의해 안전하게 방어되는 것을 확인할 수 있습니다.
+```py
+# 크기가 7인 스택 초기화
+init_stack(7)
+print_stack()
+
+# Push 연산 수행
+push("커피")
+push("녹차")
+push("꿀물")
+push("레몬차")
+push("오렌지주스")
+push("밀크티")
+push("아이스티")
+
+push("콜라") # 스택이 가득 찼습니다! (크기 7 초과 방어)
+
+print_stack()
+
+peek() # 최상단 데이터 확인 (아이스티)
+
+# Pop 연산 수행
+pop()
+pop()
+pop()
+pop()
+pop()
+pop()
+pop()
+
+pop() # 스택이 비어있습니다! 삭제할 데이터가 없습니다.
+
+peek() # 스택이 비어있습니다! Peek 불가
+
+print_stack()
+```
+
 ## 10월 15일(6주차)
 ### 1. 원형 연결 리스트의 기본 개념
 원형 연결 리스트는 마지막 노드가 다시 첫 번째 노드를 가리키는(회전하는) 구조의 자료구조입니다.
