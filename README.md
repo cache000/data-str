@@ -1,5 +1,98 @@
 # 신동훈 202630111
 
+## 11월 5일
+### 1. 큐(Queue) 자료구조의 구현 및 활용
+큐(Queue)는 먼저 들어간 데이터가 먼저 나오는 선입선출(FIFO, First In First Out) 방식의 자료구조입니다. 파이썬의 리스트(print_q)와 데이터의 앞/뒤 인덱스를 추적하는 전역 변수(front, rear)를 활용하여 큐의 주요 연산을 구현했습니다.
+
+#### 1. 큐 초기화 (init_queue) 및 상태 출력 (print_queue)
+지정한 크기(size)만큼 비어있는(None) 리스트를 생성하고, 데이터의 맨 앞쪽을 가리키는 front와 맨 뒤쪽을 가리키는 rear를 모두 -1로 초기화합니다. print_queue 함수는 리스트의 처음부터 끝까지 순회하며 전체 큐의 상태와 현재 front, rear의 위치를 출력합니다
+```py
+def init_queue(size):
+    global print_q, front, rear
+    print_q = [None] * size
+    front = -1
+    rear = -1
+    return print("큐 초기화 완료! 큐의 크기: " + str(size))
+
+def print_queue():
+    print("=== 큐 상태 ===")
+    print("큐의 크기: " + str(len(print_q)))
+    for i in range(len(print_q)):
+        print(print_q[i])
+    print("현재 front: " + str(front))
+    print("현재 rear: " + str(rear))
+    print("=================")
+```
+
+#### 2. 큐 꽉 참/비어있음 확인 (is_queue_full, is_queue_empty)
+데이터를 삽입하거나 추출하기 전에 큐의 상태를 확인하는 함수입니다.
+- `Full`: 마지막 데이터가 들어간 위치(rear)가 리스트의 맨 끝 인덱스(len(print_q) - 1)에 도달하면 꽉 찬 상태로 판단합니다.
+- `Empty`: 데이터를 추출한 위치(front)와 마지막 데이터가 들어간 위치(rear)가 같아지면 큐가 비어있는 것으로 판단합니다.
+```py
+def is_queue_empty():
+    global front, rear
+    if front == rear:
+        return True
+    else:
+        return False
+
+def is_queue_full():
+    global rear
+    if rear == len(print_q) - 1:
+        return True
+    else:
+        return False
+```
+
+#### 3. 큐 데이터 삽입(enqueue), 추출(dequeue), 확인(peek)
+- `Enqueue`: 큐가 꽉 차지 않았다면 rear를 1 증가시키고, 해당 위치에 새로운 데이터를 삽입합니다.
+- `Dequeue`: 큐가 비어있지 않다면 front를 1 증가시키고 해당 위치의 데이터를 임시 변수(temp)에 담은 뒤, 원래 자리를 None으로 비우고 데이터를 반환합니다.
+- `Peek`: 큐에서 데이터를 빼내지 않고, 다음에 나올 데이터(front + 1 위치의 데이터)를 확인만 합니다.
+```py
+def enqueue(data):
+    global rear
+    if is_queue_full():
+        return print("큐가 가득 찼습니다!")
+    else:
+        rear += 1
+        print_q[rear] = data
+        return print("현재 rear: " + str(rear))
+
+def dequeue():
+    global front, temp
+    if is_queue_empty():
+        return print("큐가 비어있습니다! 삭제할 데이터가 없습니다.")
+    front += 1
+    temp = print_q[front]
+    print_q[front] = None
+    return temp
+
+def peek():
+    global front
+    if is_queue_empty():
+        return print("큐가 비어있습니다! Peek 불가!")
+    else:
+        temp = print_q[front + 1]
+        return temp
+```
+
+#### 4. 큐 동작 테스트
+작성한 함수를 바탕으로 크기가 5인 큐를 초기화한 후 데이터를 삽입하고 확인하는 테스트 코드입니다. 5개의 요소를 모두 삽입하여 큐를 가득 채운 후, peek() 함수를 통해 가장 앞에 있는(다음에 추출될) 데이터를 확인합니다.
+```py
+init_queue(5)
+enqueue("커피")
+enqueue("우유")
+enqueue("주스")
+enqueue("물")
+enqueue("콜라")
+
+print("======peek() 함수 호출 전======")
+print(peek()) # 큐의 가장 맨 앞(front+1)에 있는 데이터 확인
+print("======peek() 함수 호출 후======")
+
+print_queue()
+```
+
 ## 10월 29일
 ### 1. 파이썬 웹 브라우저 제어 (webbrowser 모듈)
 파이썬의 내장 모듈인 webbrowser를 활용하여 기본 웹 브라우저를 열고 특정 URL로 접속하는 간단한 실습입니다.
