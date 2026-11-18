@@ -1,5 +1,64 @@
 # 신동훈 202630111
 
+## 11월 12일
+### 1. 이진 트리(Binary Tree) 자료구조의 구현
+이진 트리는 각 노드가 최대 두 개의 자식 노드(왼쪽 자식, 오른쪽 자식)를 가질 수 있는 계층형 비선형 자료구조입니다. 이번 실습에서는 노드의 데이터와 좌우 링크를 포함하는 클래스를 정의하고, 각 노드를 수동으로 연결하여 트리 구조를 구성했습니다.
+
+#### 1. 트리 노드 클래스 정의 (tree_node)
+실제 값을 저장하는 data와 왼쪽 자식 노드를 가리키는 left, 오른쪽 자식 노드를 가리키는 right 링크로 구성된 tree_node 클래스를 정의합니다.
+```py
+class tree_node:
+    def __init__(self):
+        self.data = None
+        self.left = None
+        self.right = None
+```
+
+#### 2. 노드 생성 및 계층 구조 연결
+루트 노드(node1)부터 시작하여 각 노드의 left와 right 속성에 자식 노드를 할당함으로써 계층적인 트리 구조를 만듭니다.
+```
+        커피 (node1)
+        /          \
+   우유 (node2)    주스 (node3)
+    /       \         /
+물 (node4) 콜라 (node5) 사이다 (node6)
+```
+```py
+node1 = tree_node()
+node1.data = "커피"
+
+node2 = tree_node()
+node2.data = "우유"
+node1.left = node2   # 커피의 왼쪽 자식 -> 우유
+
+node3 = tree_node()
+node3.data = "주스"
+node1.right = node3  # 커피의 오른쪽 자식 -> 주스
+
+node4 = tree_node()
+node4.data = "물"
+node2.left = node4   # 우유의 왼쪽 자식 -> 물
+
+node5 = tree_node()
+node5.data = "콜라"
+node2.right = node5  # 우유의 오른쪽 자식 -> 콜라
+
+node6 = tree_node()
+node6.data = "사이다"
+node3.left = node6   # 주스의 왼쪽 자식 -> 사이다
+```
+
+#### 3. 이진 트리 레벨별 출력
+루트 노드(node1)에서 시작하여 .left와 .right 참조를 연속으로 따라가며 트리의 각 깊이(레벨)에 위치한 노드들의 데이터를 순서대로 출력합니다.
+```py
+print("=== 이진 트리 구조 ===")
+print(node1.data, end="")
+print()
+print(node1.left.data, node1.right.data, end="")
+print()
+print(node1.left.left.data, node1.left.right.data, node1.right.left.data)
+```
+
 ## 11월 5일
 ### 1. 큐(Queue) 자료구조의 구현 및 활용
 큐(Queue)는 먼저 들어간 데이터가 먼저 나오는 선입선출(FIFO, First In First Out) 방식의 자료구조입니다. 파이썬의 리스트(print_q)와 데이터의 앞/뒤 인덱스를 추적하는 전역 변수(front, rear)를 활용하여 큐의 주요 연산을 구현했습니다.
