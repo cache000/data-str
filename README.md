@@ -1,5 +1,60 @@
 # 신동훈 202630111
 
+## 11월 19일
+### 1. 그래프(Graph) 자료구조와 인접 행렬(Adjacency Matrix) 구현
+그래프는 정점(Vertex)과 간선(Edge)으로 이루어진 비선형 자료구조입니다. 이번 실습에서는 정점 간의 연결 관계를 2차원 배열(size × size)로 표현하는 인접 행렬 방식을 사용하여 그래프를 구현했습니다.
+
+#### 1. 그래프 클래스 정의 (graph) 및 출력 함수 (print_graph)
+정점의 개수(size)를 입력받아 모든 요소가 0으로 초기화된 2차원 리스트를 생성하는 graph 클래스를 정의합니다. print_graph 함수는 이중 반복문을 통해 2차원 배열 형태의 인접 행렬을 행과 열에 맞춰 출력합니다.
+```py
+# 클래스 선언부
+class graph:
+    def __init__(self, size):
+        self.SIZE = size
+        self.graph = [[0 for _ in range(size)] for _ in range(size)]
+
+def print_graph(graph):
+    print("===" + " 그래프 출력 " + "===")
+    for row in range(graph.SIZE):
+        for col in range(graph.SIZE):
+            print(graph.graph[row][col], end=' ')
+        print()
+```
+
+#### 2. 무방향 그래프(G1) 구성
+정점 4개(0, 1, 2, 3)를 가진 무방향 그래프 G1을 생성하고, 간선으로 연결된 정점 쌍의 행렬 값을 1로 설정합니다. 무방향 그래프는 방향성이 없으므로 (0, 1)과 (1, 0)처럼 대칭되는 위치에 모두 1을 저장합니다.
+```py
+G1 = graph(4)
+G1.graph[0][1] = 1
+G1.graph[0][2] = 1
+G1.graph[0][3] = 1
+G1.graph[1][0] = 1
+G1.graph[1][2] = 1
+G1.graph[2][0] = 1
+G1.graph[2][1] = 1
+G1.graph[2][3] = 1
+G1.graph[3][0] = 1
+G1.graph[3][2] = 1
+
+print_graph(G1)
+```
+
+#### 3. 방향 그래프(G3) 구성 및 출력
+정점 4개를 가진 그래프 G3을 생성하고, 특정 출발 정점에서 도착 정점으로 향하는 단방향 간선(0→1, 0→2, 3→0, 3→2)만 1로 설정하여 인접 행렬을 직접 순회하며 출력합니다.
+```py
+G3 = graph(4)
+G3.graph[0][1] = 1
+G3.graph[0][2] = 1
+G3.graph[3][0] = 1
+G3.graph[3][2] = 1
+
+print('=== G3 무방향 그래프 ===')
+for row in range(G3.SIZE):
+    for col in range(G3.SIZE):
+        print(G3.graph[row][col], end=' ')
+    print()
+```
+
 ## 11월 12일
 ### 1. 이진 트리(Binary Tree) 자료구조의 구현
 이진 트리는 각 노드가 최대 두 개의 자식 노드(왼쪽 자식, 오른쪽 자식)를 가질 수 있는 계층형 비선형 자료구조입니다. 이번 실습에서는 노드의 데이터와 좌우 링크를 포함하는 클래스를 정의하고, 각 노드를 수동으로 연결하여 트리 구조를 구성했습니다.
