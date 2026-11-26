@@ -1,5 +1,123 @@
 # 신동훈 202630111
 
+## 11월 26일
+### 1. 재귀 호출(Recursion)의 개념과 동작 원리
+재귀 호출이란 함수 내부에서 자기 자신을 다시 호출하는 프로그래밍 기법입니다. 큰 문제를 동일한 구조의 더 작은 하위 문제로 쪼개어 해결할 때 유용하게 사용됩니다.
+- 기저 조건(Base Case): 재귀 호출이 무한히 반복되어 스택 오버플로우(Stack Overflow)가 발생하는 것을 막기 위한 종료 조건입니다.
+- 재귀 단계(Recursive Step): 문제를 더 작은 단위로 줄여가며 자기 자신을 다시 호출하는 구간입니다.
+- 호출 스택(Call Stack)의 흐름: 함수가 호출될 때마다 메모리 스택에 실행 정보가 쌓이며, 기저 조건에 도달해 값을 반환하기 시작하면 가장 마지막에 호출된 함수부터 역순으로 빠져나오며 나머지 코드를 실행합니다.
+
+#### 재귀 호출의 진입과 복귀 흐름 확인 (callback)
+재귀 호출 코드의 앞과 뒤에 출력문을 배치하면, 기저 조건(num == 0)에 도달할 때까지 함수가 안쪽으로 깊어지는 과정과 반환 후 바깥쪽으로 빠져나오는 과정을 직관적으로 확인할 수 있습니다.
+```py
+def callback(num):
+    num -= 1
+    if num == 0:
+        print("Count reached zero. Stopping execution.")
+        return
+    print("Callback function executed. count", num) # 재귀 진입 시 실행
+    callback(num)
+    print("Callback function executed. count", num) # 재귀 복귀 시 실행
+
+callback(3)
+```
+
+### 2. 수학적 연산의 재귀 구현
+#### 1) 1부터 N까지의 합 구하기 (add_numbers)
+end에서 시작하여 1씩 감소시키며 자기 자신을 호출하고, 기저 조건(end <= start)에 도달하면 1을 반환하며 역순으로 누적 합계를 계산합니다.
+```py
+def add_numbers(start, end):
+    if end <= start:
+        return 1
+    return end + add_numbers(start, end - 1)
+
+print(add_numbers(1, 10)) # 출력: 55
+```
+
+#### 2) 팩토리얼(Factorial) 계산 (factorial)
+n이 1 이하가 될 때까지 재귀적으로 내려갔다가, 반환된 값(foo)에 현재의 n을 곱해 올라오며 $5! = 120$을 계산합니다.
+```py
+def factorial(n):
+    if n <= 1:
+        print("n:", n)
+        return 1
+    print("n:", n)
+    foo = factorial(n - 1)
+    print("n:", n)
+    return n * foo
+
+print(factorial(5)) # 출력: 120
+```
+
+#### 3) 거듭제곱 계산 (power)
+모든 수의 0제곱은 1이므로 exponent == 0일 때 1을 반환합니다.
+```py
+def power(base, exponent):
+    if exponent == 0:
+        return 1
+    return base * power(base, exponent - 1)
+
+print(power(2, 4)) # 출력: 16
+```
+
+### 3. 반복 구조와 패턴 출력의 재귀 및 반복문 구현
+#### 1) 카운트다운 (countdown)
+n부터 1까지 숫자를 출력한 뒤 0 이하가 되면 "발사!!!"를 출력합니다. for 반복문과 재귀 호출이 서로 동일한 로직으로 변환될 수 있음을 보여줍니다.
+
+```py
+# 재귀 호출 방식
+def countdown(n):
+    if n <= 0:
+        print("발사!!!")
+        return
+    print(n)
+    countdown(n - 1)
+
+# 반복문 방식 비교
+# def countdown(n):
+#     for i in range(n, 0, -1):
+#         print(i)
+#     print("발사!!!")
+
+countdown(5)
+```
+
+#### 2) 별 찍기 (print_starts)
+재귀 호출(print_starts(n - 1))을 출력문(print("*" * n))보다 먼저 배치하여, n=1인 기저 조건에 도달한 뒤 복귀하는 과정에서 별이 1개부터 5개까지 오름차순으로 출력되도록 구현했습니다.
+```py
+def print_starts(n):
+    if n <= 0:
+        return
+    print_starts(n - 1) # 먼저 가장 작은 단계(1)까지 들어간 후
+    print("*" * n)      # 복귀하면서 1개부터 n개까지 순서대로 출력
+
+print_starts(5)
+```
+
+#### 3) 2중 반복문을 이용한 구구단 출력 (multiplication_table)
+바깥쪽 for 문으로 단(1~9)을 제어하고, 안쪽 for 문으로 곱하는 수(1~9)를 제어하여 전체 구구단을 출력합니다. 포맷 문자열({i * j:2})을 사용해 결과값이 한 자리 수일 때도 두 칸 폭으로 정렬되도록 처리했습니다.
+```py
+def multiplication_table():
+    for i in range(1, 10):
+        for j in range(1, 10):
+            print(f"{i} x {j} = {i * j:2}")
+        print()
+
+multiplication_table()
+```
+
+### 4. 배열(리스트) 요소의 합계 구하기 (arr_sum)
+배열 arr과 원소 개수 n을 전달받아 뒤쪽 원소(arr[n - 1])부터 하나씩 더해가며 전체 배열의 합을 구하는 재귀 함수입니다. n이 0 이하가 되면 더 이상 더할 원소가 없으므로 0을 반환합니다.
+```py
+def arr_sum(arr, n):
+    if n <= 0:
+        return 0
+    return arr[n - 1] + arr_sum(arr, n - 1)
+
+arr = [1, 2, 3, 4, 5]
+print(arr_sum(arr, 5)) # 출력: 15
+```
+
 ## 11월 19일
 ### 1. 그래프(Graph) 자료구조와 인접 행렬(Adjacency Matrix) 구현
 그래프는 정점(Vertex)과 간선(Edge)으로 이루어진 비선형 자료구조입니다. 이번 실습에서는 정점 간의 연결 관계를 2차원 배열(size × size)로 표현하는 인접 행렬 방식을 사용하여 그래프를 구현했습니다.
